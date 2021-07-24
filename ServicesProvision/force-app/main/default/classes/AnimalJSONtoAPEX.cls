@@ -1,7 +1,7 @@
 public class AnimalJSONtoAPEX {
-	public Animal animal;
+	public Animalx animal;
 
-	public class Animal {
+	public class Animalx {
 		public Integer id;
 		public String name;
 		public String eats;

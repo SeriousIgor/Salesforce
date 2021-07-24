@@ -34,14 +34,17 @@ global class Animal implements Queueable {
         request.setMethod('GET');
         HttpResponse response = http.send(request);
         if (response.getStatusCode() == 200) {
-            Map<String, Object> results = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
-            List<Object> anim = (List<Object>) results.get('anim');
-            
+            AnimalJSONtoAPEX animalJSON = AnimalJSONtoAPEX.parse(response.getBody());
+            for(Animal__c a : animals){
+                a.ExternalId__c = String.valueof(animalJSON.animal.Id);
+                a.Eats__c = animalJSON.animal.eats;
+                a.Name = animalJSON.animal.name;
+                a.Says__c = animalJSON.animal.says;
+            }
         }
     }
     
     public List<Animal__c> getAnimalsList(){
-        
         return animals;
     }
 }
