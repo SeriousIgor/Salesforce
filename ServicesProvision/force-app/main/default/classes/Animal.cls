@@ -15,6 +15,7 @@ global class Animal implements Queueable {
     
     public void setIdList(){
         for(Animal__c a : animals){
+            System.debug(a.id + ' | ' + a.Name);
             animalsId.add(a.id);
         }
     }
