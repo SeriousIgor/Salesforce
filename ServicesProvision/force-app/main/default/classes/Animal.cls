@@ -1,34 +1,37 @@
-global class Animal implements Queueable {
-    Id animalId;
+global class Animal implements Queueable, Database.AllowsCallouts {
+    String animalExtId;
     String animalFood;
     String animalSays;
     
     String animalExternalId;
     
-    List<Animal__c> animals;
+    List<Animal__c> animalsList;
     List<Id> animalsId;
     List<String> externalIdList;
     
     public Animal(List<Animal__c> animals){
-        this.animals = animals;
+        animalsId = new List<Id>();
+        animalsList = animals;
     }
     
-    public void setIdList(){
-        for(Animal__c a : animals){
-            System.debug(a.id + ' | ' + a.Name);
+    void setIdList(){
+        for(Animal__c a : animalsList){
             animalsId.add(a.id);
         }
     }
     
     public void execute(QueueableContext context){
-        animals = [SELECT id, Name, ExternalId__c, Eats__c, Says__c FROM Animal__c WHERE id in: animalsId];
+        setIdList();
+        animalsList = [SELECT id, Name, ExternalId__c, Eats__c, Says__c FROM Animal__c WHERE id in: animalsId];
         externalIdList = new List<String>();
-        for(Animal__c animal : animals){
+        for(Animal__c animal : animalsList){
             externalIdList.add(animal.ExternalId__c);
         }
+        parseJSON('https://th-apex-http-callout.herokuapp.com/animals/1');
+        update animalsList;
     }
     
-    public void parseJSON(String link){
+    void parseJSON(String link){
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setEndpoint(link);
@@ -36,16 +39,12 @@ global class Animal implements Queueable {
         HttpResponse response = http.send(request);
         if (response.getStatusCode() == 200) {
             AnimalJSONtoAPEX animalJSON = AnimalJSONtoAPEX.parse(response.getBody());
-            for(Animal__c a : animals){
+            for(Animal__c a : animalsList){
                 a.ExternalId__c = String.valueof(animalJSON.animal.Id);
                 a.Eats__c = animalJSON.animal.eats;
                 a.Name = animalJSON.animal.name;
                 a.Says__c = animalJSON.animal.says;
             }
         }
-    }
-    
-    public List<Animal__c> getAnimalsList(){
-        return animals;
     }
 }
