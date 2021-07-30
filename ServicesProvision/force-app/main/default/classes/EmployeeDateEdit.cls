@@ -1,5 +1,5 @@
 public class EmployeeDateEdit {
-    list<Id> idList;
+    public list<Id> idList;
     list<Employee__c> employeeList;
     
     public EmployeeDateEdit(){
