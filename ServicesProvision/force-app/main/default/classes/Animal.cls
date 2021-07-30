@@ -21,6 +21,7 @@ global class Animal implements Queueable, Database.AllowsCallouts {
     }
     
     public void execute(QueueableContext context){
+
         setIdList();
         animalsList = [SELECT id, Name, ExternalId__c, Eats__c, Says__c FROM Animal__c WHERE id in: animalsId];
         externalIdList = new List<String>();

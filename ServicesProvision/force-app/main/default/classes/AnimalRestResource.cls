@@ -1,6 +1,5 @@
 @RestResource(urlMapping='/Animal/*')
 global without sharing class AnimalRestResource {
-    static boolean isUnique = false;
     @HttpGet
     global static List<Animal__c> getRecord(){        
         RestRequest request = RestContext.request;
@@ -22,7 +21,11 @@ global without sharing class AnimalRestResource {
         return resultList;
     }
     @HttpPost
-    global static void createAnimal() {
+    global static Id createAnimal() {
+        boolean isUnique = true;
+        List<Boolean> flags = new List<Boolean>();
+        Id returnedId = null;
+        
         Map<String, Object> params = (Map<String, Object>) JSON.deserializeUntyped(RestContext.request.requestBody.toString());
         Map<String, Object> textBody = (Map<String, Object>)params.get('animal');	
         String externalId = String.valueOf(textBody.get('id'));
@@ -50,6 +53,8 @@ global without sharing class AnimalRestResource {
                 if(anim.Eats__c == null){
                     anim.Eats__c = eats;
                 }
+                flags.add(false);
+                System.debug('false');
             }
             else if (response.getStatusCode() == 200) {
                 System.debug('else if');
@@ -62,16 +67,23 @@ global without sharing class AnimalRestResource {
                         anim.Name = animalJSON.animal.name;
                         if(anim.Says__c == null)
                         anim.Says__c = animalJSON.animal.says;
-                        isUnique = false;
+                        flags.add(false);
+                        System.debug('false');
                     }
                     else{
-                        isUnique = true;
+                        flags.add(true);
+                        System.debug('true');
                     }
             }
             else{
-                isUnique = true;
+                flags.add(true);
+                System.debug('true');
             }
-            System.debug('Flag state is ' + isUnique);
+        }
+        for(boolean f : flags){
+            if(!f){
+                isUnique = false;
+            }
         }
         if(isUnique){
             System.debug('Else');
@@ -80,9 +92,12 @@ global without sharing class AnimalRestResource {
             newAnimal.Says__c = says;
             newAnimal.Eats__c = eats;
             newAnimal.ExternalId__c = ExternalId;
+            newAnimal.Flag__c = true;
             insert newAnimal;
+            returnedId = newAnimal.id;
         }
         System.debug('Animal list size - ' + animalsList.size());
         update animalsList;
+        return returnedId;
     }
 }
