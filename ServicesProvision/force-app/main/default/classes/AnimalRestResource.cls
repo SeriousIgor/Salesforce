@@ -6,7 +6,7 @@ global without sharing class AnimalRestResource {
         String animalId = request.requestURI.substring(
         	request.requestURI.lastIndexOf('/')+1);
         List<Animal__c> resultList;
-        if((String.isNotBlank(animalId))&&((animalId.length() == 18)||(animalId.length() == 15))){
+        if((String.isNotBlank(animalId))&&(animalId instanceOf Id)){
             resultList = [SELECT Name, ExternalId__c, Eats__c, Says__c FROM Animal__c
                            	WHERE id = : ID.valueOf(animalId)];
         }
