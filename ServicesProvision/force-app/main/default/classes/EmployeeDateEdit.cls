@@ -1,5 +1,5 @@
 public class EmployeeDateEdit {
-    public list<Id> idList;
+    list<Id> idList;
     list<Employee__c> employeeList;
     
     public EmployeeDateEdit(){
@@ -11,7 +11,7 @@ public class EmployeeDateEdit {
             idList.add(ord.Employee__c);
         }
     }
-    public void changeList(){
+    void changeList(){
         employeeList = [SELECT id,Last_order__c FROM Employee__c WHERE id in: idList];
         for(Employee__c empl : employeeList){
         	empl.Last_order__c = System.now();

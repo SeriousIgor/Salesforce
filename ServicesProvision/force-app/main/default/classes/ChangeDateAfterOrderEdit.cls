@@ -19,7 +19,8 @@ public class ChangeDateAfterOrderEdit {
             idEmployeeList.add(ord.Employee__c);
         }
     }
-    void changeList(){
+
+    private void changeList(){
         employeeList = [SELECT id,Last_order__c FROM Employee__c WHERE id in: idEmployeeList];
         oldEmployeeList = [SELECT id,Last_order__c FROM Employee__c WHERE id in: oldIdEmployeeList];
         for(Employee__c empl : employeeList){
@@ -31,11 +32,18 @@ public class ChangeDateAfterOrderEdit {
         employeeList.addAll(oldEmployeeList);
     }
 
-    public Employee__c getNewestDate(Employee__c employee){
+    private Employee__c getNewestDate(Employee__c employee){
         for(Order__c Order : ordersList){
-            if(employee.ID == Order.Employee__c)
-            if((employee.Last_order__c == null)||(employee.Last_order__c > Order.Order_Date__c)){
-                employee.Last_order__c = Order.Order_Date__c;
+
+            if(employee.ID == Order.Employee__c){
+                System.debug('empl ' + employee.id);
+                System.debug('empl ' + employee.Last_order__c);
+                System.debug('ord ' + Order.employee__c);
+                System.debug('ord ' + Order.Order_Date__c);
+                System.debug(employee.Last_order__c < Order.Order_Date__c);
+                if((employee.Last_order__c == null)||(employee.Last_order__c < Order.Order_Date__c)){
+                    employee.Last_order__c = Order.Order_Date__c;
+                }
             }
         }
         return employee;

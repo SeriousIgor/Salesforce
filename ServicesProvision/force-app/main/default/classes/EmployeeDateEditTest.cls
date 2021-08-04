@@ -1,36 +1,22 @@
 @isTest
 private class EmployeeDateEditTest {
-    @isTest static void testChangeList(){
-        EmployeeDateEdit ede = new EmployeeDateEdit();
+    @TestSetup
+    static void setup(){
+        TestDataFactory.createEmployeeWithOrders(3, 3);
     }
-    @isTest static void testSetIdList(){
-        EmployeeDateEdit ede = new EmployeeDateEdit();
-        List<Order__c> orderList = [SELECT id, Employee__c FROM Order__c LIMIT 10];
-        List<Id> idlist = new List<Id>();
 
-        for(Order__c order : orderList){
-            idList.add(order.Employee__c);
+    @isTest static void setIdListTest(){
+        Order__c order = [SELECT id, Order_Date__c, Employee__c FROM Order__c LIMIT 1];
+        List<Employee__c> employeeList = [SELECT id FROM Employee__c];
+
+        for(Employee__c e : employeeList){
+            if(order.Employee__c != e.id){
+                order.Employee__c = e.id;
+                break;
+            }
         }
-        ede.setIdList(orderList);
-
-        System.assertEquals(idList, ede.idList);
-    }
-    
-    @isTest static void testGetEmployeeList(){
-        EmployeeDateEdit ede = new EmployeeDateEdit();
-        List<Order__c> orderList = [SELECT id, Employee__c FROM Order__c LIMIT 10];
-        List<Id> idlist = new List<Id>();
-
-        for(Order__c order : orderList){
-            idList.add(order.Employee__c);
-        }
-        List<Employee__c> employeeList = [SELECT id, Last_order__c FROM Employee__c where id in : idlist];
-        for(Employee__c employee : employeeList){
-            employee.Last_order__c = System.now();
-        }
-        ede.idList = idlist;
-
-        System.assertEquals(employeeList, ede.getEmployeeList());
-        
+        Test.startTest();
+        update order;
+        Test.stopTest();
     }
 }
