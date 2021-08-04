@@ -1,22 +1,19 @@
 @isTest
-private class EmployeeDateEditTest {
-    @TestSetup
-    static void setup(){
-        TestDataFactory.createEmployeeWithOrders(3, 3);
-    }
-
+public class EmployeeDateEditTest {
     @isTest static void setIdListTest(){
-        Order__c order = [SELECT id, Order_Date__c, Employee__c FROM Order__c LIMIT 1];
-        List<Employee__c> employeeList = [SELECT id FROM Employee__c];
+        Employee__c emp = new Employee__c();
+        insert emp;
 
-        for(Employee__c e : employeeList){
-            if(order.Employee__c != e.id){
-                order.Employee__c = e.id;
-                break;
-            }
-        }
+        Order__c order = new Order__c(
+            Order_Date__c = System.now(),
+            Employee__c = emp.id
+        );
         Test.startTest();
-        update order;
+            insert order;
         Test.stopTest();
+
+        emp = [SELECT id, Last_Order__c FROM Employee__C LIMIT 1];
+
+        System.assertEquals(System.now(), emp.Last_Order__C);
     }
 }

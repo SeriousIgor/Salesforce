@@ -14,6 +14,7 @@ public class EmployeeDateEdit {
     void changeList(){
         employeeList = [SELECT id,Last_order__c FROM Employee__c WHERE id in: idList];
         for(Employee__c empl : employeeList){
+            if(empl.Last_order__c == null)
         	empl.Last_order__c = System.now();
     	}
     }
