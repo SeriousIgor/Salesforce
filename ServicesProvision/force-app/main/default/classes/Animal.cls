@@ -21,14 +21,14 @@ global class Animal implements Queueable, Database.AllowsCallouts {
     }
     
     public void execute(QueueableContext context){
-
+        Integer extId = 1;
         setIdList();
         animalsList = [SELECT id, Name, ExternalId__c, Eats__c, Says__c FROM Animal__c WHERE id in: animalsId];
         externalIdList = new List<String>();
         for(Animal__c animal : animalsList){
             externalIdList.add(animal.ExternalId__c);
         }
-        parseJSON('https://th-apex-http-callout.herokuapp.com/animals/1');
+        parseJSON('https://th-apex-http-callout.herokuapp.com/animals/' + String.valueOf(extId));
         update animalsList;
     }
     
