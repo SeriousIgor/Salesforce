@@ -1,0 +1,46 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" controller="AnimalController" access="global" >
+	<aura:attribute name="animalId" type="String"/>
+    <aura:attribute name="animalListWrapper" type="Object"/>
+   	<div class="row">
+        <lightning:input id="AnimalExtID" name="animalIdInput" label="Animal get" placeholder="Enter id..." value="{!v.animalId}"/>
+        <lightning:button class="slds-button slds-button_neutral" variant="base" label="Get animals by id" title="Get animals" onclick="{! c.handleClick }"/>
+    </div>
+    <div>
+        <table id="atable" class="slds-table" aria-labelledby="">
+            <thead>
+                <tr class="">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Animal Name">Animal Name</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Says">Says</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Eats">Eats</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="ExternalId">External Id</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <aura:iteration items="{!v.animalListWrapper}" var="item">
+                    <tr class="">
+                      <td data-label="Animal Name">
+                        <div class="a-td" title="nameValue">{!item.name}</div>
+                      </td>
+                      <td data-label="Says">
+                        <div class="a-td" title="saysValue">{!item.says}</div>
+                      </td>
+                      <td data-label="Eats">
+                        <div class="a-td" title="EatsValue">{!item.eats}</div>
+                      </td>
+                      <td data-label="ExternalId">
+                        <div class="a-td" title="idValue">{!item.externalId}</div>
+                      </td>
+                    </tr>
+    			</aura:iteration>
+            </tbody>
+        </table>
+    </div>
+</aura:component>
