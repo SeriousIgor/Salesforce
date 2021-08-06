@@ -2,15 +2,14 @@
 	margin-top : 10px;
     margin-left : 10px;
     text-align : center;
-  	border: 1px solid black;
     border-collapse: collapse;
 }
-.THIS .th {
+.THIS .a-th {
   padding: 15px;
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
-.THIS .td {
+.THIS .a-td {
   padding: 15px;
   text-align: left;
   border-bottom: 1px solid #ddd;
