@@ -5,6 +5,9 @@ global without sharing class AnimalRestResource {
         RestRequest request = RestContext.request;
         String animalId = request.requestURI.substring(
         	request.requestURI.lastIndexOf('/')+1);
+        
+        System.debug('Animal id ' + animalId);
+
         List<Animal__c> resultList;
         if((String.isNotBlank(animalId))&&(animalId instanceOf Id)){
             resultList = [SELECT Name, ExternalId__c, Eats__c, Says__c FROM Animal__c
@@ -38,15 +41,13 @@ global without sharing class AnimalRestResource {
         request.setEndpoint('https://th-apex-http-callout.herokuapp.com/animals/1');
         request.setMethod('GET');
         HttpResponse response = http.send(request);
+
+        System.debug(response);
         
         List<Animal__c> animalsList = [SELECT id, Name, ExternalId__c, Says__c, Eats__c FROM Animal__c];
         
         for(Animal__c anim : animalsList){
             if(anim.ExternalID__c == externalID){
-                System.debug('if');
-                if(anim.Name == null){
-                    anim.Name = name;
-                }
                 if(anim.Says__c == null){
                     anim.Says__c = says;
                 }
@@ -54,30 +55,22 @@ global without sharing class AnimalRestResource {
                     anim.Eats__c = eats;
                 }
                 flags.add(false);
-                System.debug('false');
             }
             else if (response.getStatusCode() == 200) {
-                System.debug('else if');
                 AnimalJSONtoAPEX animalJSON = AnimalJSONtoAPEX.parse(response.getBody());
                     if(externalId == String.valueof(animalJSON.animal.Id)){
-                        System.debug('else if - if');
                         if(anim.Eats__c == null)
                         anim.Eats__c = animalJSON.animal.eats;
-                        if(anim.Name == null)
-                        anim.Name = animalJSON.animal.name;
                         if(anim.Says__c == null)
                         anim.Says__c = animalJSON.animal.says;
                         flags.add(false);
-                        System.debug('false');
                     }
                     else{
                         flags.add(true);
-                        System.debug('true');
                     }
             }
             else{
                 flags.add(true);
-                System.debug('true');
             }
         }
         for(boolean f : flags){
@@ -86,7 +79,6 @@ global without sharing class AnimalRestResource {
             }
         }
         if(isUnique){
-            System.debug('Else');
             Animal__c newAnimal = new Animal__c();
             newAnimal.Name = name;
             newAnimal.Says__c = says;

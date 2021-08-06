@@ -1,17 +1,16 @@
 ({
-	handleClick : function(component, event, helper) {
-		console.log('test');
-	},
-    init : function(cmp, event, helper){
-    	var action = cmp.get('c.getAnimal');
+	handleClick : function(cmp, event, helper) {
+        var action = cmp.get('c.getAnimal');
     	action.setParams({
-    		name : cmp.get('animId')
+    		animalId : cmp.get('v.animalId')
 		});
-        action.setCallback(this, function(responce){
-            var state = response.getState();
-            console.log(response.getReturnValue());
-            cmp.set('v.freeResp', response.getReturnValue());
+        action.setCallback(this, function(resp){
+            var state = resp.getState();
+            console.log('Response: ');
+            console.log(resp.getReturnValue());
+            cmp.set('v.freeResp', resp.getReturnValue());
         });
         $A.enqueueAction(action);
-	}
+    }
+    
 })
