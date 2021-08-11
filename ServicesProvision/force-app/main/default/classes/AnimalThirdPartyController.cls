@@ -35,8 +35,8 @@ public  class AnimalThirdPartyController {
     }
 
     @AuraEnabled
-    public static Boolean checkForDublicate(){
-        animalList = [SELECT Name, Eats__c, Says__c, ExternalId__c FROM Animal__c WHERE ExternalId__c =: externalId];
+    public static Boolean checkForDublicate(String extId){
+        animalList = [SELECT Name, Eats__c, Says__c, ExternalId__c FROM Animal__c WHERE ExternalId__c =: extId];
         if(animalList.size() > 0){
             return true;
         }

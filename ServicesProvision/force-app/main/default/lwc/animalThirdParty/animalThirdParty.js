@@ -10,7 +10,7 @@ export default class AnimalThirdParty extends LightningElement {
     externalId;
     animalObj;
     error;
-    updateRecord = false;
+    isDublicate = false;
     popUpWindow = false;
 
     handleClick(){
@@ -28,21 +28,44 @@ export default class AnimalThirdParty extends LightningElement {
             });        
 
         this.animalInfoLabel = this.animalObj;
+
+        checkForDublicate({extId: this.externalId})
+            .then((result) =>{
+                this.isDublicate = result;
+                console.log(this.isDublicate);
+            })
+            .catch((error) =>{
+                this.isDublicate = undefined;
+            });
+        
+        if(this.isDublicate){
+            this.modalWindolLabel = 'There are one or more records in DB with same External ID. Would you like to update them instead of insert new record?'
+        }
+        
         this.popUpWindow = true;
     }
     callmeout(){
-        if(!this.updateRecord){
-            insertAnimal({extId: this.externalId});
-        }
-        else{
+        if(this.isDublicate){
             replaceValueInRecord({extId: this.externalId});
         }
+        else{
+            insertAnimal({extId: this.externalId});
+        }
+        
         this.popUpWindow = false;
     }
     closeModal(){
+        if(this.isDublicate){
+            insertAnimal({extId: this.externalId});
+        }
+
         this.popUpWindow = false;
     }
     closeQuickAction(){
+        if(this.isDublicate){
+            insertAnimal({extId: this.externalId});
+        }
+
         this.popUpWindow = false;
     }
 }
