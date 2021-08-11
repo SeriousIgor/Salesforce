@@ -1,6 +1,7 @@
 public  class AnimalThirdPartyController {
     static Animal__c animal;
     static String externalId;
+    static List<Animal__c> animalList;
 
     @AuraEnabled(cacheable=true)
     public static Animal__c getAnimalId(String extId){
@@ -23,22 +24,27 @@ public  class AnimalThirdPartyController {
     }
 
     @AuraEnabled
-    public static void insertAnimal(){
-        if(checkForDublicate()){
-            
-        }
-        else{
-            insert animal;
-        }
-        
-    }
-    private static Boolean checkForDublicate(){
-        List<Animal__c> animalList = [SELECT Name, Eats__c, Says__c, ExternalId__c FROM Animal__c WHERE ExternalId__c =: externalId];
+    public static Boolean checkForDublicate(){
+        animalList = [SELECT Name, Eats__c, Says__c, ExternalId__c FROM Animal__c WHERE ExternalId__c =: externalId];
         if(animalList.size() > 0){
             return true;
         }
         else {
             return false;
+        }
+    }
+
+    @AuraEnabled
+    public static void insertAnimal(){
+        insert animal;
+    }
+
+    @AuraEnabled
+    public static void replaceValueInRecord(){
+        for(Animal__c a : animalList){
+            a.Name = animal.Name;
+            a.Eats__c = animal.Eats__c;
+            a.Says__c = animal.Says__c;
         }
     }
 }

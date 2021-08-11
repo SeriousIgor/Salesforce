@@ -1,6 +1,8 @@
 import { LightningElement } from 'lwc';
 import getAnimalId from '@salesforce/apex/AnimalThirdPartyController.getAnimalId';
 import insertAnimal from '@salesforce/apex/AnimalThirdPartyController.insertAnimal';
+import checkForDublicate from '@salesforce/apex/AnimalThirdPartyController.checkForDublicate';
+import replaceValueInRecord from '@salesforce/apex/AnimalThirdPartyController.replaceValueInRecord';
 
 export default class AnimalThirdParty extends LightningElement {
     animalInfoLabel;
