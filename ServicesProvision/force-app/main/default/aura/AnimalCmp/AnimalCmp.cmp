@@ -2,7 +2,7 @@
 	<aura:attribute name="animalId" type="String"/>
     <aura:attribute name="animalListWrapper" type="Object"/>
    	<div class="row">
-        <lightning:input id="AnimalExtID" name="animalIdInput" label="Animal get" placeholder="Enter id..." value="{!v.animalId}"/>
+        <lightning:input id="AnimalExtID" name="animalIdInput" placeholder="Enter id..." value="{!v.animalId}"/>
         <lightning:button class="slds-button slds-button_neutral" variant="base" label="Get animals by id" title="Get animals" onclick="{! c.handleClick }"/>
     </div>
     <div>

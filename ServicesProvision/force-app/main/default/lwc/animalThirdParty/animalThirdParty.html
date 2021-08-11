@@ -1,0 +1,39 @@
+<template>
+    <lightning-card title="animalThirdParty" icon-name="custom:custom14">
+        <div class="slds-m-around_medium">
+          <p>Record from third party {animalInfoLabel}!</p>
+          <lightning-input placeholder="Enter external id" value={animalInfoLabel}></lightning-input>
+          <lightning-button variant="brand" label="Get record" title="Get-record" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+        </div>
+      </lightning-card>
+      <template if:true={popUpWindow}>
+        <div class="slds-box slds-theme_shade">
+          <div class="slds-modal slds-fade-in-open slds-backdrop">
+            <div class="slds-modal__container">
+              <div class="slds-modal__header">
+                <lightning-button-icon
+                  icon-name="utility:close"
+                  alternative-text="Close this window"
+                  size="large"
+                  variant="bare-inverse"
+                  onclick={closeModal}
+                  class="slds-modal__close"
+                >
+                </lightning-button-icon>
+              </div>
+              <div class="slds-modal__content slds-p-around_medium">
+                <div>
+                    <lightning-icon icon-name="utility:connected_apps" size="small"></lightning-icon>
+                   <p> 'Are you sure you would like to Insert record to database?'</p>
+                   <p>{animalInfoLabel}</p>
+                   </div>  
+              </div>
+              <div class="slds-modal__footer">
+                <lightning-button label="Yes" onclick={callmeout}></lightning-button>
+                <lightning-button label="No" onclick={closeQuickAction}></lightning-button> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+</template>
