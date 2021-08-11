@@ -4,7 +4,8 @@ public  class AnimalThirdPartyController {
     static List<Animal__c> animalList;
 
     @AuraEnabled(cacheable=true)
-    public static Animal__c getAnimalId(String extId){
+    public static String getAnimalId(String extId){
+        String resultAnimal;
         externalId = extId;
         Http http = new Http();
         HttpRequest request = new HttpRequest();
@@ -13,6 +14,7 @@ public  class AnimalThirdPartyController {
         HttpResponse response = http.send(request);
         animal = new Animal__c(
             ExternalId__c = externalId
+            
         );
         if (response.getStatusCode() == 200) {
             AnimalJSONtoAPEX animalJSON = AnimalJSONtoAPEX.parse(response.getBody());
@@ -20,7 +22,8 @@ public  class AnimalThirdPartyController {
                 animal.Name = animalJSON.animal.name;
                 animal.Says__c = animalJSON.animal.says;
         }
-        return animal;
+        resultAnimal = 'Name ' + animal.Name + ', Eats ' + animal.Eats__c + ', Says ' + animal.Says__c;
+        return resultAnimal;
     }
 
     @AuraEnabled

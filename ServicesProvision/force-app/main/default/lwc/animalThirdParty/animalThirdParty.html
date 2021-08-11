@@ -1,7 +1,7 @@
 <template>
     <lightning-card title="animalThirdParty" icon-name="custom:custom14">
         <div class="slds-m-around_medium">
-          <p>Record from third party {animalInfoLabel}!</p>
+          <p>Add record from third party!</p>
           <lightning-input placeholder="Enter external id" value={animalInfoLabel}></lightning-input>
           <lightning-button variant="brand" label="Get record" title="Get-record" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
         </div>
@@ -24,7 +24,7 @@
               <div class="slds-modal__content slds-p-around_medium">
                 <div>
                     <lightning-icon icon-name="utility:connected_apps" size="small"></lightning-icon>
-                   <p> 'Are you sure you would like to Insert record to database?'</p>
+                   <p>'Are you sure you would like to Insert record to database?'</p>
                    <p>{animalInfoLabel}</p>
                    </div>  
               </div>
