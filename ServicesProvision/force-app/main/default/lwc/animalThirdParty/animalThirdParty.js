@@ -5,12 +5,17 @@ import checkForDublicate from '@salesforce/apex/AnimalThirdPartyController.check
 import replaceValueInRecord from '@salesforce/apex/AnimalThirdPartyController.replaceValueInRecord';
 
 export default class AnimalThirdParty extends LightningElement {
-    externalId = '1';
-    animalObj
+    modalWindolLabel;
     animalInfoLabel;
+    externalId;
+    animalObj;
     error;
+    updateRecord = false;
     popUpWindow = false;
+
     handleClick(){
+        this.modalWindolLabel = 'Are you sure you would like to Insert record to database?';
+        this.externalId = this.template.querySelector('lightning-input').value;
         getAnimalId({extId: this.externalId})
             .then((result) =>{
                 this.animalObj = result;
@@ -26,7 +31,12 @@ export default class AnimalThirdParty extends LightningElement {
         this.popUpWindow = true;
     }
     callmeout(){
-        insertAnimal();
+        if(!this.updateRecord){
+            insertAnimal({extId: this.externalId});
+        }
+        else{
+            replaceValueInRecord({extId: this.externalId});
+        }
         this.popUpWindow = false;
     }
     closeModal(){

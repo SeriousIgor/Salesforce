@@ -5,6 +5,7 @@ public  class AnimalThirdPartyController {
 
     @AuraEnabled(cacheable=true)
     public static String getAnimalId(String extId){
+        System.debug('getAnimalId');
         String resultAnimal;
         externalId = extId;
         Http http = new Http();
@@ -13,16 +14,23 @@ public  class AnimalThirdPartyController {
         request.setMethod('GET');
         HttpResponse response = http.send(request);
         animal = new Animal__c(
-            ExternalId__c = externalId
-            
+            ExternalId__c = externalId,
+            Flag__c = true
+
         );
         if (response.getStatusCode() == 200) {
+            System.debug('Response code is 200');
             AnimalJSONtoAPEX animalJSON = AnimalJSONtoAPEX.parse(response.getBody());
                 animal.Eats__c = animalJSON.animal.eats;
                 animal.Name = animalJSON.animal.name;
                 animal.Says__c = animalJSON.animal.says;
         }
-        resultAnimal = 'Name ' + animal.Name + ', Eats ' + animal.Eats__c + ', Says ' + animal.Says__c;
+        if(animal != null){
+            resultAnimal = 'Name : ' + animal.Name + ' | Eats : ' + animal.Eats__c + ' | Says : ' + animal.Says__c;
+        }
+        else{
+            resultAnimal = 'empty';
+        }
         return resultAnimal;
     }
 
@@ -38,16 +46,20 @@ public  class AnimalThirdPartyController {
     }
 
     @AuraEnabled
-    public static void insertAnimal(){
-        insert animal;
+    public static void insertAnimal(String extId){
+        if(getAnimalId(extId) != 'empty'){
+            insert animal;
+        }
     }
 
     @AuraEnabled
-    public static void replaceValueInRecord(){
+    public static void replaceValueInRecord(String extId){
+        getAnimalId(extId);
         for(Animal__c a : animalList){
             a.Name = animal.Name;
             a.Eats__c = animal.Eats__c;
             a.Says__c = animal.Says__c;
         }
+        update animalList;
     }
 }
