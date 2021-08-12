@@ -13,23 +13,24 @@ public  class AnimalThirdPartyController {
         request.setEndpoint('https://th-apex-http-callout.herokuapp.com/animals/' + String.valueOf(externalId));
         request.setMethod('GET');
         HttpResponse response = http.send(request);
-        animal = new Animal__c(
+        if (response.getStatusCode() == 200) {
+            animal = new Animal__c(
             ExternalId__c = externalId,
             Flag__c = true
-
-        );
-        if (response.getStatusCode() == 200) {
+            );
             System.debug('Response code is 200');
             AnimalJSONtoAPEX animalJSON = AnimalJSONtoAPEX.parse(response.getBody());
                 animal.Eats__c = animalJSON.animal.eats;
                 animal.Name = animalJSON.animal.name;
                 animal.Says__c = animalJSON.animal.says;
         }
-        if(animal != null){
-            resultAnimal = 'Name : ' + animal.Name + ' | Eats : ' + animal.Eats__c + ' | Says : ' + animal.Says__c;
+        if((String.isBlank(animal.Name))
+        &&(String.isBlank(animal.Eats__c))
+        &&(String.isBlank(animal.Says__c))){
+            resultAnimal = 'Empty';
         }
         else{
-            resultAnimal = 'empty';
+            resultAnimal = 'Name:' + animal.Name + '|Eats:' + animal.Eats__c + '|Says:' + animal.Says__c;
         }
         return resultAnimal;
     }
@@ -37,6 +38,7 @@ public  class AnimalThirdPartyController {
     @AuraEnabled
     public static Boolean checkForDublicate(String extId){
         animalList = [SELECT Name, Eats__c, Says__c, ExternalId__c FROM Animal__c WHERE ExternalId__c =: extId];
+
         if(animalList.size() > 0){
             return true;
         }
@@ -47,7 +49,7 @@ public  class AnimalThirdPartyController {
 
     @AuraEnabled
     public static void insertAnimal(String extId){
-        if(getAnimalId(extId) != 'empty'){
+        if(getAnimalId(extId) != 'Empty'){
             insert animal;
         }
     }
@@ -55,7 +57,9 @@ public  class AnimalThirdPartyController {
     @AuraEnabled
     public static void replaceValueInRecord(String extId){
         getAnimalId(extId);
+        animalList = [SELECT Name, Eats__c, Says__c, ExternalId__c FROM Animal__c WHERE ExternalId__c =: extId];
         for(Animal__c a : animalList){
+            System.debug(a.Name + ' - ' + animal.Name);
             a.Name = animal.Name;
             a.Eats__c = animal.Eats__c;
             a.Says__c = animal.Says__c;

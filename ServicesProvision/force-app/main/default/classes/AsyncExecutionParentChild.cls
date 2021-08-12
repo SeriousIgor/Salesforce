@@ -5,7 +5,6 @@ public class AsyncExecutionParentChild implements Queueable {
     public AsyncExecutionParentChild(String fullName, integer salary, String position){
         empl = new Employee__c(Full_name__c = fullName, Salary__c = salary, Position__c = position);
         System.debug('Test');
-        System.debug(empl.id);
     }
     
     public AsyncExecutionParentChild(integer price, id emplId){

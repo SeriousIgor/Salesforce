@@ -24,7 +24,7 @@
               <div class="slds-modal__content slds-p-around_medium">
                 <div>
                     <lightning-icon icon-name="utility:connected_apps" size="small"></lightning-icon>
-                   <p>{modalWindolLabel}</p>
+                   <p>'Are you sure you would like to Insert record to database?'</p>
                    <p>{animalInfoLabel}</p>
                    </div>  
               </div>
@@ -35,5 +35,42 @@
             </div>
           </div>
         </div>
+      </template>
+      <template if:true={modalWindow}>
+        <div class="slds-box slds-theme_shade">
+          <div class="slds-modal slds-fade-in-open slds-backdrop">
+            <div class="slds-modal__container">
+              <div class="slds-modal__header">
+                <lightning-button-icon
+                  icon-name="utility:close"
+                  alternative-text="Close this window"
+                  size="large"
+                  variant="bare-inverse"
+                  onclick={closeModal}
+                  class="slds-modal__close"
+                >
+                </lightning-button-icon>
+              </div>
+              <div class="slds-modal__content slds-p-around_medium">
+                <div>
+                    <lightning-icon icon-name="utility:connected_apps" size="small"></lightning-icon>
+                   <p>'There are one or more records in db with the same externalID. Would you like to change them instead of creating new record?'</p>
+                   <p>{animalInfoLabel}</p>
+                   </div>  
+              </div>
+              <div class="slds-modal__footer">
+                <lightning-button label="Yes" onclick={callmeoutModal}></lightning-button>
+                <lightning-button label="No" onclick={closeQuickActionModal}></lightning-button> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template if:true={showForm}>
+        <c-animal-create
+        datasend = {animalObj}
+        onclose={modalCloseHandler}
+        >
+        </c-animal-create>
       </template>
 </template>

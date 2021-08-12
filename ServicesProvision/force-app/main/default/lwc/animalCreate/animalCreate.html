@@ -1,0 +1,30 @@
+<template>
+        <lightning-card title="animalCreate" icon-name="custom:custom14">
+            <div class="slds-m-around_medium">
+                <lightning-record-edit-form object-api-name="Animal__c" onsuccess={handleAccountCreated}>
+                    <lightning-input-field field-name="Name"
+                                        value={dfv_AnimalName}>
+                    </lightning-input-field>
+                    <lightning-input-field field-name="Eats__c"
+                                        value={dfv_Eats}>
+                    </lightning-input-field>
+                    <lightning-input-field field-name="Says__c"
+                                        value={dfv_Says}>
+                    </lightning-input-field>
+                    <lightning-input-field field-name="ExternalId__c"
+                                        value={dfv_ExternalId}>
+                    </lightning-input-field>
+                    <lightning-input-field field-name="Flag__c"
+                                value={dfv_Flag}>
+                    </lightning-input-field>
+
+                    <lightning-button class="slds-m-top_small"
+                                    type="submit"
+                                    label="Create"
+                                    onclick={create}
+                    >
+                    </lightning-button>
+                </lightning-record-edit-form>
+            </div>
+        </lightning-card>
+</template>
