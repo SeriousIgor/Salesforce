@@ -1,0 +1,14 @@
+<apex:page standardController="Animal__c" extensions="AnimalVFController" action="{! getAnimal}">
+    <apex:pageBlock>
+        <apex:form>
+            <apex:inputField value="{!Animal__c.ExternalId__c}"/> <p/>
+            <apex:commandButton value="Get" action="{! getAnimal}"/>
+        </apex:form>
+        <apex:pageBlockTable value="{! animal}" var="a">
+            <apex:column value="{! aName}"/>
+            <apex:column value="{! eats}"/>
+            <apex:column value="{! says}"/>
+            <apex:column value="{! extId}"/>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:page>

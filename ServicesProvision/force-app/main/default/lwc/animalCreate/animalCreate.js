@@ -8,13 +8,14 @@ import {
   } from "lightning/messageService";
 
 import getAnimalId from '@salesforce/apex/AnimalThirdPartyController.getAnimalId';
-
+ 
 export default class AnimalCreate extends LightningElement {
     @wire(MessageContext)
     messageContext;
 
     receivedMessage;
     subscription;
+    error;
 
     @wire(CurrentPageReference)
     setCurrentPageReference(currentPageReference) {
