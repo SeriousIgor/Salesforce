@@ -1,20 +1,3 @@
-public class BatchClass implements Database.Batchable<sObject>, Schedulable {
-    public Database.QueryLocator start(Database.BatchableContext bc) {
-        // collect the batches of records or objects to be passed to execute
-        return Database.getQueryLocator(
-            'SELECT Id' +
-            'FROM Contact ' +
-            'WHERE '
-        );
-    }
-    public void execute(Database.BatchableContext bc, List<Contact> records) {
-        // process each batch of records
-    }    
-    public void finish(Database.BatchableContext bc) {
-        // execute any post-processing operations
-    }
-    public void execute(SchedulableContext sc) {
-      BatchClass batch = new BatchClass();
-      database.executebatch(batch,100);
-}    
+public class BatchClass  {
+    
 }

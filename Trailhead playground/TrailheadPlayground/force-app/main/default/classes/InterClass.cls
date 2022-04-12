@@ -4,4 +4,9 @@ public interface InterClass {
     String stringMethod();
 
     Integer integerMethod();
+
+    Double doubleMethod(Double param, Double secondParam);
+
+    SObject sObjectMethod(Integer param);
+    
 }
